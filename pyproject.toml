@@ -3,4 +3,7 @@ name = "repl-nix-repliteditor"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pillow>=11.0.0",
+    "qrcode>=8.0",
+]

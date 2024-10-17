@@ -1,0 +1,19 @@
+{
+  "name": "repliteditor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@react-native-community/cli": "^14.1.1",
+    "@react-native-community/cli-platform-android": "^14.1.1",
+    "@react-native-community/cli-platform-ios": "^14.1.1",
+    "metro-react-native-babel-transformer": "^0.77.0",
+    "react-native-svg": "^15.8.0"
+  }
+}

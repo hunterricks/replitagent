@@ -38,9 +38,13 @@ def run_project():
                 elif "Running Metro" in output:
                     print("Metro bundler is running, waiting for port information...")
             
-            if time.time() - start_time > 600:  # Increased timeout to 10 minutes
-                print("Timeout: React Native development server did not provide port information within 10 minutes.")
+            if time.time() - start_time > 900:  # Increased timeout to 15 minutes
+                print("Timeout: React Native development server did not provide port information within 15 minutes.")
                 break
+            
+            # Add more detailed logging
+            if time.time() - start_time > 300 and (int(time.time() - start_time) % 60 == 0):
+                print(f"Still waiting for port information... ({int((time.time() - start_time) / 60)} minutes elapsed)")
         
         print("Error: React Native development server failed to start properly or provide port information.")
         print("Checking for error messages...")

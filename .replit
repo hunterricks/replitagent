@@ -17,7 +17,31 @@ args = "Setup Project"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Run Project"
+args = "Install and Start Expo"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start Expo Web"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Build Expo Web"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Setup React App"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Check Workflows"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start React App"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start Expo Mobile"
 
 [[workflows.workflow]]
 name = "Setup Project"
@@ -31,7 +55,76 @@ task = "shell.exec"
 args = "python setup.py"
 
 [[workflows.workflow]]
-name = "Run Project"
+name = "Install and Start Expo"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd happyhouse && npm install && npx expo start --web --port 3001 --host localhost"
+waitForPort = 3001
+
+[[workflows.workflow]]
+name = "Start Expo Web"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd happyhouse && npm run start-web"
+waitForPort = 3001
+
+[[workflows.workflow]]
+name = "Build Expo Web"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd happyhouse && npm run build"
+
+[[workflows.workflow]]
+name = "Setup React App"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mkdir -p web-app/src web-app/public && cd web-app && npm init -y && npm install react react-dom react-scripts"
+
+[[workflows.workflow]]
+name = "Check Workflows"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo 'Checking workflows'"
+
+[[workflows.workflow]]
+name = "Start React App"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd web-app && PORT=3000 npm start"
+waitForPort = 3000
+
+[[workflows.workflow]]
+name = "Start Expo Mobile"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -40,10 +133,35 @@ agentRequireRestartOnSave = false
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python run.py"
+waitForPort = 19000
 
 [deployment]
 run = ["sh", "-c", "python setup.py"]
 
 [[ports]]
+localPort = 80
+externalPort = 3000
+
+[[ports]]
+localPort = 3000
+externalPort = 4200
+
+[[ports]]
+localPort = 3001
+externalPort = 5000
+
+[[ports]]
 localPort = 8081
 externalPort = 80
+
+[[ports]]
+localPort = 19000
+externalPort = 3001
+
+[[ports]]
+localPort = 19006
+externalPort = 3002
+
+[[ports]]
+localPort = 19007
+externalPort = 3003

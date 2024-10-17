@@ -8,10 +8,10 @@ def run_project():
     try:
         os.chdir("happyhouse")
         
-        print("Starting React Native development server...")
+        print("Starting Expo development server for mobile...")
         
         process = subprocess.Popen(
-            ["npx", "react-native", "start"],
+            ["npx", "expo", "start", "--port", "19000", "--host", "localhost"],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -19,11 +19,8 @@ def run_project():
             bufsize=1
         )
         
-        process.stdin.write('y\n')
-        process.stdin.flush()
-        
         start_time = time.time()
-        port_pattern = re.compile(r'Metro waiting on (\d+)')
+        port_pattern = re.compile(r'Metro waiting on (http://.*:\d+)')
         while True:
             output = process.stdout.readline()
             if output == '' and process.poll() is not None:
@@ -32,21 +29,23 @@ def run_project():
                 print(output.strip())
                 port_match = port_pattern.search(output)
                 if port_match:
-                    port = port_match.group(1)
-                    print(f"React Native development server is running on port {port}.")
+                    url = port_match.group(1)
+                    print(f"Expo development server is running on {url}")
+                    print("To run on iOS simulator: expo run:ios")
+                    print("To run on Android emulator: expo run:android")
+                    print("To run on physical device, scan the QR code with the Expo Go app")
                     return
-                elif "Running Metro" in output:
-                    print("Metro bundler is running, waiting for port information...")
+                elif "Starting project" in output:
+                    print("Expo is starting, waiting for URL information...")
             
-            if time.time() - start_time > 900:  # Increased timeout to 15 minutes
-                print("Timeout: React Native development server did not provide port information within 15 minutes.")
+            if time.time() - start_time > 900:  # 15 minutes timeout
+                print("Timeout: Expo development server did not provide URL information within 15 minutes.")
                 break
             
-            # Add more detailed logging
             if time.time() - start_time > 300 and (int(time.time() - start_time) % 60 == 0):
-                print(f"Still waiting for port information... ({int((time.time() - start_time) / 60)} minutes elapsed)")
+                print(f"Still waiting for URL information... ({int((time.time() - start_time) / 60)} minutes elapsed)")
         
-        print("Error: React Native development server failed to start properly or provide port information.")
+        print("Error: Expo development server failed to start properly or provide URL information.")
         print("Checking for error messages...")
         
         error_output = process.stderr.read()

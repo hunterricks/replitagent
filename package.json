@@ -28,6 +28,7 @@
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "react-dom": "^18.3.1",
+    "react-native": "^0.75.4",
     "react-native-svg": "^15.8.0",
     "react-native-web": "^0.18.12",
     "react-scripts": "^5.0.1",

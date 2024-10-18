@@ -1,0 +1,49 @@
+2024-10-18 01:54:40,314 - WARNING - High memory usage: 94.7%. This may affect Expo server performance.
+2024-10-18 01:54:40,314 - WARNING - System resources (CPU or memory) are running low. This may affect Expo server performance.
+warn From React Native 0.72, your metro.config.js file should extend'@react-native/metro-config'. Please see the React Native 0.72 changelog, or copy the template at:
+https://github.com/facebook/react-native/blob/main/packages/react-native/template/metro.config.js
+warn Falling back to internal defaults.
+
+                        ▒▒▓▓▓▓▒▒
+                     ▒▓▓▓▒▒░░▒▒▓▓▓▒
+                  ▒▓▓▓▓░░░▒▒▒▒░░░▓▓▓▓▒
+                 ▓▓▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▓▓
+                 ▓▓░░░░░▒▓▓▓▓▓▓▒░░░░░▓▓
+                 ▓▓░░▓▓▒░░░▒▒░░░▒▓▒░░▓▓
+                 ▓▓░░▓▓▓▓▓▒▒▒▒▓▓▓▓▒░░▓▓
+                 ▓▓░░▓▓▓▓▓▓▓▓▓▓▓▓▓▒░░▓▓
+                 ▓▓▒░░▒▒▓▓▓▓▓▓▓▓▒░░░▒▓▓
+                  ▒▓▓▓▒░░░▒▓▓▒░░░▒▓▓▓▒
+                     ▒▓▓▓▒░░░░▒▓▓▓▒
+                        ▒▒▓▓▓▓▒▒
+
+
+error store.clear is not a function.
+TypeError: store.clear is not a function
+    at /home/runner/ReplitEditor/happyhouse/node_modules/metro/src/Server.js:62:57
+    at Array.forEach (<anonymous>)
+    at new Server (/home/runner/ReplitEditor/happyhouse/node_modules/metro/src/Server.js:62:32)
+    at runMetro (/home/runner/ReplitEditor/happyhouse/node_modules/metro/src/index.flow.js:59:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async createConnectMiddleware (/home/runner/ReplitEditor/happyhouse/node_modules/metro/src/index.flow.js:87:23)
+    at async exports.runServer (/home/runner/ReplitEditor/happyhouse/node_modules/metro/src/index.flow.js:158:44)
+    at async Object.runServer [as func] (/home/runner/ReplitEditor/happyhouse/node_modules/@react-native-community/cli-plugin-metro/build/commands/start/runServer.js:100:26)
+    at async Command.handleAction (/home/runner/ReplitEditor/happyhouse/node_modules/@react-native-community/cli/build/index.js:111:9)
+info Run CLI with --verbose flag for more details.
+2024-10-18 01:54:42,648 - ERROR - Failed to clear Metro bundler cache.
+npm warn using --force Recommended protections disabled.
+2024-10-18 01:54:43,584 - INFO - npm cache cleaned successfully.
+2024-10-18 01:54:44,943 - INFO - Starting project at /home/runner/ReplitEditor/happyhouse
+2024-10-18 01:54:47,126 - ERROR - Error: node:internal/fs/watchers:255
+2024-10-18 01:54:47,126 - INFO - Starting Metro Bundler
+2024-10-18 01:54:47,126 - ERROR - Error: throw error;
+2024-10-18 01:54:47,126 - INFO - Waiting on http://localhost:19000
+2024-10-18 01:54:47,126 - ERROR - Error: ^
+2024-10-18 01:54:47,126 - INFO - Logs for your project will appear below.
+2024-10-18 01:54:47,126 - ERROR - Error: 
+2024-10-18 01:54:47,145 - ERROR - Error: Expo development server failed to provide URL information.
+2024-10-18 01:54:47,145 - ERROR - Stack trace:
+Traceback (most recent call last):
+  File "/home/runner/ReplitEditor/run.py", line 79, in run_project
+    raise RuntimeError("Expo development server failed to provide URL information.")
+RuntimeError: Expo development server failed to provide URL information.

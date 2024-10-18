@@ -1,5 +1,6 @@
 {pkgs}: {
   deps = [
+    pkgs.inotify-tools
     pkgs.zlib
     pkgs.tk
     pkgs.tcl

@@ -29,38 +29,19 @@ def generate_qr_code(url):
         print(f"Error: Failed to generate QR code. {str(e)}")
         print(f"Expo URL: {url}")
 
-def check_file_watcher_limit():
-    try:
-        with open("/proc/sys/fs/inotify/max_user_watches", "r") as f:
-            current_limit = int(f.read().strip())
-        return current_limit
-    except Exception as e:
-        print(f"Error checking file watcher limit: {str(e)}")
-        return None
-
 def run_project():
     try:
         os.chdir("happyhouse")
         
-        # Check file watcher limit
-        current_limit = check_file_watcher_limit()
-        if current_limit is not None and current_limit < 524288:
-            print("Warning: File watcher limit is low. This may cause issues with Expo.")
-            print("Consider increasing the limit if you encounter problems.")
-        
         print("Starting Expo development server for mobile...")
         
-        env = os.environ.copy()
-        env['CI'] = '1'  # Set CI environment variable to disable watch mode
-        
         process = subprocess.Popen(
-            ["npx", "expo", "start", "--port", "19000", "--no-dev", "--minify"],
+            ["npx", "expo", "start", "--port", "19000", "--max-workers", "2"],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
-            bufsize=1,
-            env=env
+            bufsize=1
         )
         
         start_time = time.time()

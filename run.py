@@ -10,7 +10,7 @@ def generate_qr_code(url):
         from io import BytesIO
         from PIL import Image
 
-        qr = qrcode.QRCode(version=1, box_size=10, border=5)
+        qr = qrcode.QRCode(version=1, box_size=5, border=4)
         qr.add_data(url)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
@@ -25,8 +25,8 @@ def generate_qr_code(url):
         f.seek(0)
         w, h = img.size
         print("\nScan this QR code with the Expo Go app:")
-        for y in range(h):
-            print("".join("██" if img.getpixel((x, y)) < 128 else "  " for x in range(w)))
+        for y in range(0, h, 2):
+            print("".join("█" if img.getpixel((x, y)) < 128 else " " for x in range(w)))
     except ImportError:
         print("Unable to generate QR code. Please install 'qrcode' and 'pillow' libraries.")
         print(f"Expo URL: {url}")

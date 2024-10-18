@@ -47,6 +47,9 @@ def run_project():
         start_time = time.time()
         url_pattern = re.compile(r'(exp://.*:\d+)')
         url_found = False
+        timeout_duration = 300  # 5 minutes timeout
+        progress_interval = 30  # Show progress every 30 seconds
+        
         while True:
             output = process.stdout.readline()
             if output == '' and process.poll() is not None:
@@ -63,28 +66,48 @@ def run_project():
                 elif "Starting project" in output:
                     print("Expo is starting, waiting for URL information...")
             
-            if time.time() - start_time > 300:  # 5 minutes timeout
-                print("Timeout: Expo development server did not provide URL information within 5 minutes.")
-                break
+            elapsed_time = time.time() - start_time
+            if elapsed_time > timeout_duration:
+                raise TimeoutError(f"Timeout: Expo development server did not provide URL information within {timeout_duration // 60} minutes.")
             
-            if time.time() - start_time > 60 and (int(time.time() - start_time) % 30 == 0):
-                print(f"Still waiting for URL information... ({int((time.time() - start_time) / 60)} minutes elapsed)")
+            if int(elapsed_time) % progress_interval == 0:
+                print(f"Still waiting for URL information... ({int(elapsed_time // 60)} minutes elapsed)")
         
         if not url_found:
-            print("Error: Expo development server failed to provide URL information.")
-            print("Checking for error messages...")
-            
-            error_output = process.stderr.read()
-            if error_output:
-                print("Error output:")
-                print(error_output)
-            
-            if process.returncode is not None and process.returncode != 0:
-                raise subprocess.CalledProcessError(process.returncode, process.args)
+            raise RuntimeError("Expo development server failed to provide URL information.")
         
-    except subprocess.CalledProcessError as e:
-        print(f"Error: {e}")
+    except TimeoutError as e:
+        print(f"Error: {str(e)}")
+        print("Possible reasons:")
+        print("1. Slow internet connection")
+        print("2. High system load")
+        print("3. Insufficient system resources")
+        print("Checking for error messages...")
+        print_error_output(process)
         sys.exit(1)
+    except RuntimeError as e:
+        print(f"Error: {str(e)}")
+        print("Checking for error messages...")
+        print_error_output(process)
+        sys.exit(1)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: Expo process exited with return code {e.returncode}")
+        print("Checking for error messages...")
+        print_error_output(process)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        print("Checking for error messages...")
+        print_error_output(process)
+        sys.exit(1)
+
+def print_error_output(process):
+    error_output = process.stderr.read()
+    if error_output:
+        print("Error output:")
+        print(error_output)
+    else:
+        print("No error output found.")
 
 def main():
     run_project()

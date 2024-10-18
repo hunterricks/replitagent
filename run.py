@@ -1,36 +1,29 @@
 import os
 import subprocess
 import sys
-import time
 import logging
+import time
 import socket
 import psutil
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def is_port_in_use(port):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(('localhost', port)) == 0
-
 def find_available_port(start_port, end_port):
     for port in range(start_port, end_port + 1):
-        if not is_port_in_use(port):
-            return port
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            if s.connect_ex(('localhost', port)) != 0:
+                return port
     return None
 
 def check_system_resources():
-    cpu_percent = psutil.cpu_percent(interval=1)
-    memory_percent = psutil.virtual_memory().percent
+    cpu_usage = psutil.cpu_percent()
+    memory_usage = psutil.virtual_memory().percent
     disk_usage = psutil.disk_usage('/').percent
-    
-    logging.info(f"CPU usage: {cpu_percent}%")
-    logging.info(f"Memory usage: {memory_percent}%")
+    logging.info(f"CPU usage: {cpu_usage}%")
+    logging.info(f"Memory usage: {memory_usage}%")
     logging.info(f"Disk usage: {disk_usage}%")
-    
-    if cpu_percent > 80 or memory_percent > 80 or disk_usage > 80:
-        logging.warning("System resources are running low. This may affect Expo server performance.")
-        return False
-    return True
+    if cpu_usage > 90 or memory_usage > 90 or disk_usage > 90:
+        logging.warning("High system resource usage detected!")
 
 def run_project():
     try:
@@ -48,6 +41,7 @@ def run_project():
         logging.info(f"Starting Expo development server on port {port}...")
         
         env = os.environ.copy()
+        env["EXPO_DEBUG"] = "true"
         env["EXPO_METRO_MAX_WORKERS"] = "2"
         env["NODE_OPTIONS"] = "--max-old-space-size=512"
         
@@ -61,7 +55,7 @@ def run_project():
         )
         
         start_time = time.time()
-        timeout_duration = 600  # Increase timeout to 10 minutes
+        timeout_duration = 300  # 5 minutes timeout
         
         while True:
             output = process.stdout.readline()

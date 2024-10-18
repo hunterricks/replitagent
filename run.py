@@ -38,7 +38,7 @@ def run_project():
         print("Starting Expo development server for mobile...")
         
         process = subprocess.Popen(
-            ["npx", "expo", "start", "--port", "19000", "--host", "localhost"],
+            ["npx", "expo", "start", "--port", "19000"],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -47,7 +47,7 @@ def run_project():
         )
         
         start_time = time.time()
-        port_pattern = re.compile(r'(http://.*:\d+)')
+        port_pattern = re.compile(r'(exp://.*:\d+)')
         url_found = False
         while True:
             output = process.stdout.readline()

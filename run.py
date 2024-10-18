@@ -7,7 +7,6 @@ import re
 def generate_qr_code(url):
     try:
         import qrcode
-        from io import BytesIO
         from PIL import Image
 
         qr = qrcode.QRCode(version=1, box_size=5, border=4)
@@ -20,34 +19,52 @@ def generate_qr_code(url):
         print("QR code saved as expo_qr_code.png")
         
         # Display ASCII QR code in the console
-        f = BytesIO()
-        img.save(f, "PNG")
-        f.seek(0)
-        w, h = img.size
-        print("\nScan this QR code with the Expo Go app:")
-        for y in range(0, h, 2):
-            print("".join("█" if img.getpixel((x, y)) < 128 else " " for x in range(w)))
-    except ImportError:
-        print("Unable to generate QR code. Please install 'qrcode' and 'pillow' libraries.")
+        qr.print_tty()
+        print(f"\nExpo URL: {url}")
+    except ImportError as e:
+        print(f"Error: Unable to generate QR code. {str(e)}")
+        print("Please make sure 'qrcode' and 'pillow' libraries are installed.")
         print(f"Expo URL: {url}")
+    except Exception as e:
+        print(f"Error: Failed to generate QR code. {str(e)}")
+        print(f"Expo URL: {url}")
+
+def check_file_watcher_limit():
+    try:
+        with open("/proc/sys/fs/inotify/max_user_watches", "r") as f:
+            current_limit = int(f.read().strip())
+        return current_limit
+    except Exception as e:
+        print(f"Error checking file watcher limit: {str(e)}")
+        return None
 
 def run_project():
     try:
         os.chdir("happyhouse")
         
+        # Check file watcher limit
+        current_limit = check_file_watcher_limit()
+        if current_limit is not None and current_limit < 524288:
+            print("Warning: File watcher limit is low. This may cause issues with Expo.")
+            print("Consider increasing the limit if you encounter problems.")
+        
         print("Starting Expo development server for mobile...")
         
+        env = os.environ.copy()
+        env['CI'] = '1'  # Set CI environment variable to disable watch mode
+        
         process = subprocess.Popen(
-            ["npx", "expo", "start", "--port", "19000"],
+            ["npx", "expo", "start", "--port", "19000", "--no-dev", "--minify"],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
-            bufsize=1
+            bufsize=1,
+            env=env
         )
         
         start_time = time.time()
-        port_pattern = re.compile(r'(exp://.*:\d+)')
+        url_pattern = re.compile(r'(exp://.*:\d+)')
         url_found = False
         while True:
             output = process.stdout.readline()
@@ -55,23 +72,21 @@ def run_project():
                 break
             if output:
                 print(output.strip())
-                port_match = port_pattern.search(output)
-                if port_match and not url_found:
-                    url = port_match.group(1)
+                url_match = url_pattern.search(output)
+                if url_match and not url_found:
+                    url = url_match.group(1)
                     print(f"Expo development server is running on {url}")
-                    print("To run on iOS simulator: expo run:ios")
-                    print("To run on Android emulator: expo run:android")
-                    print("To run on physical device, scan the QR code with the Expo Go app")
+                    print("To run on a physical device, scan the QR code with the Expo Go app")
                     generate_qr_code(url)
                     url_found = True
                 elif "Starting project" in output:
                     print("Expo is starting, waiting for URL information...")
             
-            if time.time() - start_time > 900:  # 15 minutes timeout
-                print("Timeout: Expo development server did not provide URL information within 15 minutes.")
+            if time.time() - start_time > 300:  # 5 minutes timeout
+                print("Timeout: Expo development server did not provide URL information within 5 minutes.")
                 break
             
-            if time.time() - start_time > 300 and (int(time.time() - start_time) % 60 == 0):
+            if time.time() - start_time > 60 and (int(time.time() - start_time) % 30 == 0):
                 print(f"Still waiting for URL information... ({int((time.time() - start_time) / 60)} minutes elapsed)")
         
         if not url_found:

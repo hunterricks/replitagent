@@ -1,0 +1,58 @@
+removed 343 packages, and audited 1301 packages in 5s
+
+130 packages are looking for funding
+  run `npm fund` for details
+
+11 vulnerabilities (2 moderate, 9 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+Starting project at /home/runner/ReplitEditor/happyhouse
+Starting Metro Bundler
+Starting Webpack on port 19006 in development mode.
+(node:3620) [DEP_WEBPACK_DEV_SERVER_CONSTRUCTOR] DeprecationWarning: Using 'compiler' as the first argument is deprecated. Please use 'options' as the first argument and 'compiler' as the second argument.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:3620) [DEP_WEBPACK_DEV_SERVER_LISTEN] DeprecationWarning: 'listen' is deprecated. Please use the async 'start' or 'startCallback' method.
+Some dependencies are incompatible with the installed expo version:
+  react-native@0.72.6 - expected version: 0.72.10
+Your project may not work correctly until you install the correct versions of the packages.
+Fix with: npx expo install --fix
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+█ ▄▄▄▄▄ █ ██▀▀ ▀▄▀█ ▄▄▄▄▄ █
+█ █   █ █  ▀█ ▀█▀▄█ █   █ █
+█ █▄▄▄█ █▀  █▄ ▀▄██ █▄▄▄█ █
+█▄▄▄▄▄▄▄█▄█ ▀▄█▄█ █▄▄▄▄▄▄▄█
+█  █▀▄ ▄▀▀█▄█▄▀▄ ▄██ ▀▄▄ ▄█
+█▄██▀ ▄▄█▄ ▄█▀█▀ ▀▀  ▄  ▀██
+█▀▀▀▀  ▄▄▄█▀▄▀▄ ▀▄▀▄▀▀▄ ▀██
+█████▀ ▄ ▄▀  ▄ ▄▄▄ ██▄ ▀███
+█▄▄▄███▄▄  ▄█▄ ▀▄ ▄▄▄ ▀ ▄▄█
+█ ▄▄▄▄▄ █▀█ █▀█▀▀ █▄█ ▀▀▀██
+█ █   █ █▄ ▀▄▀▄▄█▄▄ ▄▄▀   █
+█ █▄▄▄█ █▀▀▄ ▄ ▄▄▄▄ ▀█▀▀ ██
+█▄▄▄▄▄▄▄█▄█▄█▄▄█████▄▄▄▄▄▄█
+
+› Metro waiting on exp://127.0.0.1:3001
+› Scan the QR code above with Expo Go (Android) or the Camera app (iOS)
+
+› Web is waiting on http://localhost:19006
+
+› Using Expo Go
+› Press s │ switch to development build
+
+› Press a │ open Android
+› Press w │ open web
+
+› Press j │ open debugger
+› Press r │ reload app
+› Press m │ toggle menu
+› Press o │ open project code in your editor
+
+› Press ? │ show all commands
+
+Logs for your project will appear below. Press Ctrl+C to exit.
+ERROR in ENOENT: no such file or directory, open '/home/runner/ReplitEditor/happyhouse/assets/icon.png'
+
+web compiled with 1 error

@@ -21,14 +21,6 @@ args = "Install and Start Expo"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Start Expo Web"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Build Expo Web"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
 args = "Setup React App"
 
 [[workflows.workflow.tasks]]
@@ -63,31 +55,8 @@ agentRequireRestartOnSave = false
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd happyhouse && npm install && npx expo start --web --port 3001 --host localhost"
-waitForPort = 3001
-
-[[workflows.workflow]]
-name = "Start Expo Web"
-author = "agent"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd happyhouse && npm run start-web"
-waitForPort = 3001
-
-[[workflows.workflow]]
-name = "Build Expo Web"
-author = "agent"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd happyhouse && npm run build"
+args = "cd happyhouse && npm install && npx expo start --port 19000"
+waitForPort = 19000
 
 [[workflows.workflow]]
 name = "Setup React App"
@@ -161,6 +130,10 @@ externalPort = 80
 [[ports]]
 localPort = 19000
 externalPort = 3001
+
+[[ports]]
+localPort = 19001
+externalPort = 6000
 
 [[ports]]
 localPort = 19006
